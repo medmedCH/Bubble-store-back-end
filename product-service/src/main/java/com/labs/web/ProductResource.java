@@ -1,6 +1,8 @@
 package com.labs.web;
 
 import com.labs.dto.ProductDto;
+import com.labs.entities.Product;
+import com.labs.repository.ProductRepository;
 import com.labs.service.ProductService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -8,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @ApplicationScoped
@@ -15,7 +18,8 @@ import java.util.List;
 @Tag(name = "product", description = "All the product methods")
 
 public class ProductResource {
-
+    @Inject
+    ProductRepository productRepository;
     @Inject
     ProductService productService;
 
@@ -36,6 +40,12 @@ public class ProductResource {
     public ProductDto create(ProductDto productDto) {
         return this.productService.create(productDto);
     }
+    @PUT @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ProductDto updateprd(@PathParam ("id") Long id, ProductDto newww) {
+       return this.productService.updateproduct(id, newww);
+    }
     @DELETE @Path("/{id}")
     public void delete(@PathParam("id") Long id) {
         this.productService.delete(id);
@@ -48,4 +58,8 @@ public class ProductResource {
     public Long countByCategoryId(@PathParam("id") Long id) {
         return this.productService.countByCategoryId(id);
     }
+
+
+
+
 }

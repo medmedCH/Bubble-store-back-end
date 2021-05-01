@@ -1,6 +1,8 @@
 package com.labs.entities;
 
+import com.labs.dto.ProductDto;
 import com.sun.istack.NotNull;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +26,8 @@ public class Product {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
 
     @NotNull
     @Column(name = "description", nullable = false)
@@ -38,13 +40,6 @@ public class Product {
 
     @Column(name = "quantity")
     private Integer quantity;
-
-    @Column(name = "sales_counter")
-    private Integer salesCounter;
-
-    @NotNull
-    @Column(name = "image_principale", nullable = false)
-    private String imageprincupale;
 
 
 
@@ -59,27 +54,68 @@ public class Product {
     private Category category;
 
 
-
-
-    public Product(@NotNull String name, @NotNull String description,
-                   @NotNull BigDecimal price,Integer quantity
-                   ,Integer salesCounter, Set<Review> reviews, Category category) {
-        this.name = name;
+    public Product(@NotNull String title, @NotNull String description,
+                   @NotNull BigDecimal price,Integer quantity, Category category) {
+        this.title = title;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.salesCounter = salesCounter;
-        this.reviews = reviews;
         this.category = category;
     }
-    public Product(@NotNull String name, @NotNull String description,
-                   @NotNull BigDecimal price,Integer quantity
-            ,Integer salesCounter, Category category) {
-        this.name = name;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-        this.salesCounter = salesCounter;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
         this.category = category;
     }
 }

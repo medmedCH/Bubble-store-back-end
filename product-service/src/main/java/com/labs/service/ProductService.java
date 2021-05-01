@@ -43,17 +43,35 @@ public class ProductService {
     public ProductDto create(ProductDto productDto) {
         log.debug("Request to create Product : {}", productDto);
         return mapToDto(this.productRepository.save(
-                new Product(
-                        productDto.getName(),
+               new Product(
+                        productDto.getTitle(),
                         productDto.getDescription(),
                         productDto.getPrice(),
                         productDto.getQuantity(),
-                        productDto.getSalesCounter(),
-                        Collections.emptySet(),
                         categoryRepository.findById(productDto.getCategoryId())
                                 .orElse(null)
                 )));
     }
+    public ProductDto updateproduct(Long id ,ProductDto productDto) {
+        var product =
+                this.productRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new IllegalStateException("The Product does not exist!"));
+
+
+   product.setTitle(productDto.getTitle());
+   product.setDescription(productDto.getDescription());
+   product.setQuantity(productDto.getQuantity());
+   product.setPrice(productDto.getPrice());
+   product.setCategory(categoryRepository.findById(productDto.getCategoryId())
+           .orElse(null));
+   this.productRepository.save(product);
+   return mapToDto(product);
+
+    }
+
+
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
         this.productRepository.deleteById(id);
@@ -65,14 +83,13 @@ public class ProductService {
     public static ProductDto mapToDto(Product product) {
         return new ProductDto(
                 product.getId(),
-                product.getName(),
+                product.getTitle(),
                 product.getDescription(),
                 product.getPrice(),
                 product.getQuantity(),
-                product.getSalesCounter(),
-                product.getReviews().stream().map(ReviewService::mapToDto)
-                        .collect(Collectors.toSet()),
                 product.getCategory().getId()
         );
     }
+
+
 }
