@@ -42,6 +42,8 @@ public class Product {
     private Integer quantity;
 
 
+    @Column(name = "imageprincipale")
+    private String imgpr;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "products_reviews",
@@ -55,11 +57,12 @@ public class Product {
 
 
     public Product(@NotNull String title, @NotNull String description,
-                   @NotNull BigDecimal price,Integer quantity, Category category) {
+                   @NotNull BigDecimal price,Integer quantity,String imgpr, Category category) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.imgpr = imgpr ;
         this.category = category;
     }
 

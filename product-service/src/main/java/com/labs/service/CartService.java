@@ -57,7 +57,7 @@ public class CartService {
     }
     public CartDto getActiveCart(String user_id) {
         List<Cart> carts = this.cartRepository
-.findByStatusAnduser_id(CartStatus.NEW, user_id);
+.findByStatusAndUser_id(CartStatus.NEW, user_id);
         if (carts != null) {
             if (carts.size() == 1) {
                 return mapToDto(carts.get(0));

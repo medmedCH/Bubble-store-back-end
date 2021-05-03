@@ -38,7 +38,7 @@ public class OrderService {
                 .map(OrderService::mapToDto).orElse(null);
     }
     public List<OrderDto> findAllByUser(String id) {
-        return this.orderRepository.findByCartuser_id(id)
+        return this.orderRepository.findById(id)
                 .stream().map(OrderService::mapToDto).collect(Collectors.toList());
     }
     public OrderDto create(OrderDto orderDto) {

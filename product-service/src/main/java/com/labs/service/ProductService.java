@@ -48,6 +48,7 @@ public class ProductService {
                         productDto.getDescription(),
                         productDto.getPrice(),
                         productDto.getQuantity(),
+                        productDto.getImgpr(),
                         categoryRepository.findById(productDto.getCategoryId())
                                 .orElse(null)
                 )));
@@ -87,6 +88,7 @@ public class ProductService {
                 product.getDescription(),
                 product.getPrice(),
                 product.getQuantity(),
+                product.getImgpr(),
                 product.getCategory().getId()
         );
     }

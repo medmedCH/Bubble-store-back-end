@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByCartuser_id(String user_id);
+    List<Order> findById(String user_id);
 }
