@@ -10,10 +10,17 @@ spring:
         - id: product-service
           uri: lb://productt
           predicates:
-            - Path=/api/categories/**,/api/products/**,/api/reviews
-
+            - Path=/api/categories/**,/api/products/**,/api/reviews/**,/api/carts/**,/api/orders/**
           filters:
             - StripPrefix=1
+        - id: user-service
+          uri: lb://userss
+          predicates:
+              - Path=/api/user/**
+
+          filters:
+              - StripPrefix=1
+
 
     loadbalancer:
       ribbon:

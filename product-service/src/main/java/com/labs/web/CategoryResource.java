@@ -32,7 +32,12 @@ public class CategoryResource {
     public List<ProductDto> findProductsByCategoryId(@PathParam("id") Long id) {
         return this.categoryService.findProductsByCategoryId(id);
     }
-
+    @PUT @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public CategoryDto updateprd(@PathParam ("id") Long id, CategoryDto catt) {
+        return this.categoryService.updatecat(id,catt);
+    }
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public CategoryDto create(CategoryDto categoryDto) {

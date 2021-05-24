@@ -23,6 +23,18 @@ public class CategoryService {
     @Inject
     ProductRepository productRepository;
 
+    public CategoryDto updatecat(Long id ,CategoryDto categoryDto){
+        var category = this.categoryRepository.findById(id).orElseThrow(() ->
+                new IllegalStateException("The Category does not exist!"));
+
+        category.setName(categoryDto.getName());
+        category.setDescription(categoryDto.getDescription());
+
+        this.categoryRepository.save(category);
+        return mapToDto(category,0L);
+
+    }
+
     public static CategoryDto mapToDto(Category category, Long productsCount) {
         return new CategoryDto(
                 category.getId(),
@@ -68,4 +80,6 @@ public class CategoryService {
                 .map(ProductService::mapToDto)
                 .collect(Collectors.toList());
     }
+
+
 }

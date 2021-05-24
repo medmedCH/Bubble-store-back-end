@@ -1,6 +1,7 @@
 package com.labs.web;
 
 import com.labs.dto.OrderDto;
+import com.labs.entities.Cart;
 import com.labs.service.OrderService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -21,11 +22,11 @@ public class OrderResource {
     public List<OrderDto> findAll() {
         return this.orderService.findAll();
     }
-    @GET
-    @Path("/customer/{id}")
-    public List<OrderDto> findAllByUser(@PathParam("id") String user_id) {
-        return this.orderService.findAllByUser(user_id);
-    }
+    /*@GET
+    @Path("/cart/")
+    public List<OrderDto> findAllBycart(Cart c) {
+        return this.orderService.findAllbycart(c);
+    }*/
     @GET
     @Path("/{id}")
     public OrderDto findById(@PathParam("id") Long id) {
@@ -44,6 +45,6 @@ public class OrderResource {
     @GET
     @Path("/exists/{id}")
     public boolean existsById(@PathParam("id") Long id) {
-        return this.orderService.existsById(id);
+        return this.orderService.existsOrderByCart(id);
     }
 }

@@ -41,8 +41,8 @@ public class Product {
     @Column(name = "quantity")
     private Integer quantity;
 
-
-    @Column(name = "imageprincipale")
+    @NotNull
+    @Column(name = "imageprincipale", nullable = false)
     private String imgpr;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -57,7 +57,7 @@ public class Product {
 
 
     public Product(@NotNull String title, @NotNull String description,
-                   @NotNull BigDecimal price,Integer quantity,String imgpr, Category category) {
+                   @NotNull BigDecimal price,Integer quantity,@NotNull String imgpr, Category category) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -120,5 +120,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getImgpr() {
+        return imgpr;
+    }
+
+    public void setImgpr(String imgpr) {
+        this.imgpr = imgpr;
     }
 }

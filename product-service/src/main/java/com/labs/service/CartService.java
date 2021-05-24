@@ -2,8 +2,11 @@ package com.labs.service;
 
 import com.labs.dto.CartDto;
 import com.labs.entities.Cart;
+import com.labs.entities.Order;
 import com.labs.entities.enums.CartStatus;
+import com.labs.entities.enums.OrderStatus;
 import com.labs.repository.CartRepository;
+import com.labs.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 public class CartService {
     @Inject
     CartRepository cartRepository;
+    @Inject
+    OrderRepository orderRepository;
 
     public List<CartDto> findAll() {
         log.debug("Request to get all Carts");
@@ -36,16 +41,20 @@ public class CartService {
         if (this.getActiveCart(user_id) == null) {
             var cart = new Cart(user_id, CartStatus.NEW);
             return this.cartRepository.save(cart);
-        } else {
-            throw new IllegalStateException("There is already an active cart");
-        }
+        } else
+        throw new IllegalStateException("cart exist !!!");
+
     }
+
     public CartDto createDto(String user_id) {
         return mapToDto(this.create(user_id));
     }
     public CartDto findById(Long id) {
         log.debug("Request to get Cart : {}", id);
         return this.cartRepository.findById(id).map(CartService::mapToDto).orElse(null);
+    }
+    public boolean existcart(String user_id){
+        return this.cartRepository.existsCartByStatusAndUser_id(CartStatus.NEW,user_id);
     }
     public void delete(Long id) {
         log.debug("Request to delete Cart : {}", id);
@@ -54,6 +63,10 @@ public class CartService {
                         + id));
         cart.setStatus(CartStatus.CANCELED);
         this.cartRepository.save(cart);
+
+        Order order = this.orderRepository.findOrderByCartIdAndStatus(id,OrderStatus.CREATION);
+        order.setStatus(OrderStatus.CLOSED);
+        this.orderRepository.save(order);
     }
     public CartDto getActiveCart(String user_id) {
         List<Cart> carts = this.cartRepository
@@ -67,6 +80,11 @@ public class CartService {
             }
         }
         return null;
+    }
+    public CartDto getcartuserlogin(String user_id){
+        List<Cart> carts= this.cartRepository.findCartByUser_idAndStatus(user_id,CartStatus.NEW);
+
+        return mapToDto(carts.get(0));
     }
     public static CartDto mapToDto(Cart cart) {
         return new CartDto(

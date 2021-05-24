@@ -12,4 +12,7 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByStatus(CartStatus status);
     List<Cart> findByStatusAndUser_id(CartStatus status, String user_id);
+    boolean existsCartByStatusAndUser_id(CartStatus status,String user_id);
+    List<Cart> findCartByUser_idAndStatus(String user_id,CartStatus status);
+
 }

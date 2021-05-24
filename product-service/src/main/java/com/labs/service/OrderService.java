@@ -37,20 +37,21 @@ public class OrderService {
         return this.orderRepository.findById(id)
                 .map(OrderService::mapToDto).orElse(null);
     }
-    public List<OrderDto> findAllByUser(String id) {
-        return this.orderRepository.findById(id)
-                .stream().map(OrderService::mapToDto).collect(Collectors.toList());
-    }
     public OrderDto create(OrderDto orderDto) {
         log.debug("Request to create Order : {}", orderDto);
         Long cartId = orderDto.getCart().getId();
+        if(!this.existsOrderByCart(cartId)){
         Cart cart = this.cartRepository.findById(cartId)
                 .orElseThrow(() -> new IllegalStateException(
                         "The Cart with ID[" + cartId + "] was not found !"));
 
         return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO,
                 OrderStatus.CREATION,
-                Collections.emptySet(), cart)));
+                Collections.emptySet(), cart)));}
+        else {
+            throw new IllegalStateException("There is already an order in this cart");
+
+        }
     }
     @Transactional
     public void delete(Long id) {
@@ -62,9 +63,11 @@ public class OrderService {
 
         orderRepository.delete(order);
     }
-    public boolean existsById(Long id) {
-        return this.orderRepository.existsById(id);
+    public boolean existsOrderByCart(Long id) {
+        return this.orderRepository.existsOrdersByCart_IdAndStatus(id,OrderStatus.CREATION);
     }
+
+
     public static OrderDto mapToDto(Order order) {
         Set<OrderItemDto> orderItems = order.getOrderItems()
                 .stream().map(OrderItemService::mapToDto).collect(Collectors.toSet());

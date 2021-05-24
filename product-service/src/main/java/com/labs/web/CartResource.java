@@ -25,9 +25,17 @@ public class CartResource {
     public List<CartDto> findAllActiveCarts() {
         return this.cartService.findAllActiveCarts();
     }
-    @GET @Path("/customer/{id}")
+    @GET @Path("/customeractive/{id}")
     public CartDto getActiveCartForCustomer(@PathParam("id") String user_id) {
         return this.cartService.getActiveCart(user_id);
+    }
+    @GET @Path("/exist/{id}")
+    public Boolean existt(@PathParam("id") String id) {
+        return this.cartService.existcart(id);
+    }
+    @GET @Path("/existcart/{id}")
+    public CartDto existtt(@PathParam("id") String id) {
+        return this.cartService.getcartuserlogin(id);
     }
     @GET @Path("/{id}")
     public CartDto findById(@PathParam("id") Long id) {

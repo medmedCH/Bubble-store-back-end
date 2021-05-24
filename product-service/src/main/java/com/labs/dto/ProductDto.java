@@ -67,4 +67,12 @@ public class ProductDto {
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
+
+    public String getImgpr() {
+        return imgpr;
+    }
+
+    public void setImgpr(String imgpr) {
+        this.imgpr = imgpr;
+    }
 }
