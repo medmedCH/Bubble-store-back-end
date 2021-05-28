@@ -14,5 +14,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Boolean existsOrdersByCart_IdAndStatus(Long cartid,OrderStatus status);
     Order findOrderByCartIdAndStatus(Long cartid,OrderStatus status);
+    Order findOrderByCartId(Long cartid);
 
 }

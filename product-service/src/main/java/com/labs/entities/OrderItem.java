@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -24,25 +25,16 @@ public class OrderItem   {
 
     @NotNull
     @Column(name = "quantity", nullable = false)
-    private Long quantity;
+    private BigDecimal quantity;
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
-    public OrderItem(@NotNull Long quantity, Product product, Order order) {
+    public OrderItem(@NotNull BigDecimal quantity, Product product, Order order) {
         this.quantity = quantity;
         this.product = product;
         this.order = order;
     }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return Objects.equals(quantity, orderItem.quantity) &&
-                Objects.equals(product, orderItem.product) &&
-                Objects.equals(order, orderItem.order);
-    }
-    @Override
-    public int hashCode() { return Objects.hash(quantity, product, order); }
+
+
 }

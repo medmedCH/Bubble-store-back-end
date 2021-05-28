@@ -10,7 +10,7 @@ spring:
         - id: product-service
           uri: lb://productt
           predicates:
-            - Path=/api/categories/**,/api/products/**,/api/reviews/**,/api/carts/**,/api/orders/**
+            - Path=/api/categories/**,/api/products/**,/api/reviews/**,/api/carts/**,/api/orders/**,/api/order-items/**
           filters:
             - StripPrefix=1
         - id: user-service

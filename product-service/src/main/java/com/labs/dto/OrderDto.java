@@ -13,6 +13,7 @@ import java.util.Set;
 public class OrderDto {
     private Long id;
     private BigDecimal totalPrice;
+    private BigDecimal totalarticles;
     private String status;
     private Set<OrderItemDto> orderItems;
     private CartDto cart;

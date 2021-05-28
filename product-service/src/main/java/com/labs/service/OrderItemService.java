@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class OrderItemService {
         return new OrderItemDto(
                 orderItem.getId(),
                 orderItem.getQuantity(),
-                orderItem.getProduct().getId(),
+                ProductService.mapToDto(orderItem.getProduct()),
                 orderItem.getOrder().getId()
         );
     }
@@ -35,6 +36,19 @@ public class OrderItemService {
         log.debug("Request to get OrderItem : {}", id);
         return this.orderItemRepository.findById(id)
                 .map(OrderItemService::mapToDto).orElse(null);
+    }
+    public OrderItemDto updateorderitem(Long id , BigDecimal qte){
+        var orderItem=this.orderItemRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalStateException("The oderoteem does not exist!"));
+        var order = orderItem.getOrder();
+    order.setPrice(order.getPrice().subtract(orderItem.getProduct().getPrice().multiply(orderItem.getQuantity())));
+    orderItem.setQuantity(qte);
+    order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(qte))));
+        this.orderRepository.save(order);
+    this.orderItemRepository.save(orderItem);
+        return mapToDto(orderItem);
+
     }
     public OrderItemDto create(OrderItemDto orderItemDto) {
         log.debug("Request to create OrderItem : {}", orderItemDto);
@@ -45,16 +59,26 @@ public class OrderItemService {
                                 new IllegalStateException("The Order does not exist!"));
         var product =
                 this.productRepository
-                        .findById(orderItemDto.getProductId())
+                        .findById(orderItemDto.getProduct().getId())
                         .orElseThrow(() ->
                                 new IllegalStateException("The Product does not exist!"));
-        var orderItem = this.orderItemRepository.save(
+        var orderItem=this.orderItemRepository.findOrderItemByOrderAndProduct(order,product);
+        if (orderItem!=null){
+            orderItem.setQuantity(orderItem.getQuantity().add(orderItemDto.getQuantity()));
+            this.orderItemRepository.save(orderItem);
+            order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(orderItemDto.getQuantity()))));
+            order.setTotalarticles(order.getTotalarticles().add(orderItem.getQuantity()));
+            this.orderRepository.save(order);
+            return mapToDto(orderItem);
+        }else
+         orderItem = this.orderItemRepository.save(
                 new OrderItem(
                         orderItemDto.getQuantity(),
                         product,
                         order
                 ));
-        order.setPrice(order.getPrice().add(orderItem.getProduct().getPrice()));
+        order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(orderItem.getQuantity()))));
+        order.setTotalarticles(order.getTotalarticles().add(orderItem.getQuantity()));
         this.orderRepository.save(order);
         return mapToDto(orderItem);
     }
@@ -64,10 +88,12 @@ public class OrderItemService {
                 .orElseThrow(() ->
                         new IllegalStateException("The OrderItem does not exist!"));
         var order = orderItem.getOrder();
-        order.setPrice(order.getPrice().subtract(orderItem.getProduct().getPrice()));
+        order.setPrice(order.getPrice().subtract(orderItem.getProduct().getPrice().multiply(orderItem.getQuantity())));
+       order.setTotalarticles(order.getTotalarticles().subtract(orderItem.getQuantity()));
         this.orderItemRepository.deleteById(id);
-        order.getOrderItems().remove(orderItem);
         this.orderRepository.save(order);
+        order.getOrderItems().remove(orderItem);
+
     }
     public List<OrderItemDto> findByOrderId(Long id) {
         log.debug("Request to get all OrderItems of OrderId {}", id);
@@ -75,5 +101,9 @@ public class OrderItemService {
                 .stream()
                 .map(OrderItemService::mapToDto)
                 .collect(Collectors.toList());
+
+    }
+    public  int getquantityorderitems(Long id){
+        return this.orderItemRepository.findOrderItemByOrderId(id);
     }
 }

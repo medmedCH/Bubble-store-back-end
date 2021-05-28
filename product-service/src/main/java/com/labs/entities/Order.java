@@ -26,20 +26,22 @@ public class Order  {
     @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
     @NotNull
+    @Column(name = "n_articles", precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalarticles;
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderStatus status;
-
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<OrderItem> orderItems;
     @OneToOne
     private Cart cart;
-    public Order(@NotNull BigDecimal price, @NotNull OrderStatus status,
+    public Order(@NotNull BigDecimal price,@NotNull BigDecimal totalarticles, @NotNull OrderStatus status,
                  Set<OrderItem> orderItems, Cart cart) {
         this.price = price;
+        this.totalarticles=totalarticles;
         this.status = status;
-
         this.orderItems = orderItems;
         this.cart = cart;
     }

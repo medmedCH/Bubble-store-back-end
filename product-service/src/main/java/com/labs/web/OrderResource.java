@@ -22,11 +22,11 @@ public class OrderResource {
     public List<OrderDto> findAll() {
         return this.orderService.findAll();
     }
-    /*@GET
-    @Path("/cart/")
-    public List<OrderDto> findAllBycart(Cart c) {
-        return this.orderService.findAllbycart(c);
-    }*/
+    @GET
+    @Path("getorder/{id}")
+    public OrderDto findorder(@PathParam("id") Long id) {
+        return this.orderService.getuserorder(id);
+    }
     @GET
     @Path("/{id}")
     public OrderDto findById(@PathParam("id") Long id) {

@@ -45,7 +45,7 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalStateException(
                         "The Cart with ID[" + cartId + "] was not found !"));
 
-        return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO,
+        return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO,BigDecimal.ZERO,
                 OrderStatus.CREATION,
                 Collections.emptySet(), cart)));}
         else {
@@ -66,7 +66,10 @@ public class OrderService {
     public boolean existsOrderByCart(Long id) {
         return this.orderRepository.existsOrdersByCart_IdAndStatus(id,OrderStatus.CREATION);
     }
-
+   public OrderDto getuserorder(Long cartid){
+       Order order= this.orderRepository.findOrderByCartId(cartid);
+        return  mapToDto(order);
+   }
 
     public static OrderDto mapToDto(Order order) {
         Set<OrderItemDto> orderItems = order.getOrderItems()
@@ -74,6 +77,7 @@ public class OrderService {
         return new OrderDto(
                 order.getId(),
                 order.getPrice(),
+                order.getTotalarticles(),
                 order.getStatus().name(),
                 orderItems,
                 CartService.mapToDto(order.getCart())
