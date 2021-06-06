@@ -8,12 +8,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="product-service" />
-        <module name="gateway-service" />
         <module name="user-service" />
+        <module name="payment-services" />
+        <module name="gateway-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="gateway-service" target="11" />
+      <module name="paiement-service" target="11" />
+      <module name="payment-service" target="11" />
+      <module name="payment-services" target="11" />
       <module name="product-service" target="11" />
       <module name="user-service" target="11" />
     </bytecodeTargetLevel>
@@ -21,6 +25,9 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="gateway-service" options="-parameters" />
+      <module name="paiement-service" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
+      <module name="payment-services" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>

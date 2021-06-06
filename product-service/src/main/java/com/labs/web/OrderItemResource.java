@@ -1,10 +1,8 @@
 package com.labs.web;
 
 import com.labs.dto.OrderItemDto;
-import com.labs.dto.ProductDto;
 import com.labs.service.OrderItemService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -28,11 +26,6 @@ public class OrderItemResource {
     @Path("/{id}")
     public OrderItemDto findById(@PathParam("id") Long id) {
         return this.itemService.findById(id);
-    }
-    @GET
-    @Path("total/{id}")
-    public int findByqtetotalbyId(@PathParam("id") Long id) {
-        return this.itemService.getquantityorderitems(id);
     }
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

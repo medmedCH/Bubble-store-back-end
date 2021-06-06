@@ -13,6 +13,5 @@ import java.util.List;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     List<OrderItem> findAllByOrderId(Long id);
     OrderItem findOrderItemByOrderAndProduct(Order or, Product pr);
-    @Query("SELECT oi.id, sum(oi.quantity) FROM Order o INNER JOIN OrderItem oi ON oi.order.id = o.id where o.id = ?1")
-    int findOrderItemByOrderId(Long id);
+
 }

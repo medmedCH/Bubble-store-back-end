@@ -8,7 +8,6 @@ import com.labs.entities.enums.OrderStatus;
 import com.labs.repository.CartRepository;
 import com.labs.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -83,8 +82,15 @@ public class CartService {
     }
     public CartDto getcartuserlogin(String user_id){
         List<Cart> carts= this.cartRepository.findCartByUser_idAndStatus(user_id,CartStatus.NEW);
-
-        return mapToDto(carts.get(0));
+        if (carts != null) {
+            if (carts.size() == 1) {
+                return mapToDto(carts.get(0));
+            }
+            if (carts.size() == 0) {
+                throw new IllegalStateException("No new cart yet !!!");
+            }
+        }
+        return null;
     }
     public static CartDto mapToDto(Cart cart) {
         return new CartDto(

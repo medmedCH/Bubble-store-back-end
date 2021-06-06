@@ -17,10 +17,14 @@ spring:
           uri: lb://userss
           predicates:
               - Path=/api/user/**
-
           filters:
               - StripPrefix=1
-
+        - id: payment-services
+          uri: lb://paymentt
+          predicates:
+            - Path=/api/bubblecoin/**
+          filters:
+              - StripPrefix=1
 
     loadbalancer:
       ribbon:

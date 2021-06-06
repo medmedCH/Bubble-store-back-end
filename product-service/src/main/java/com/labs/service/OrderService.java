@@ -45,7 +45,7 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalStateException(
                         "The Cart with ID[" + cartId + "] was not found !"));
 
-        return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO,BigDecimal.ZERO,
+        return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,
                 OrderStatus.CREATION,
                 Collections.emptySet(), cart)));}
         else {
@@ -77,6 +77,7 @@ public class OrderService {
         return new OrderDto(
                 order.getId(),
                 order.getPrice(),
+                order.getTotalbubblecoin(),
                 order.getTotalarticles(),
                 order.getStatus().name(),
                 orderItems,

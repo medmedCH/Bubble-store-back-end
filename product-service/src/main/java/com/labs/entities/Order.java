@@ -21,10 +21,12 @@ public class Order  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @NotNull
     @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
+    @NotNull
+    @Column(name = "total_bubblecoin", precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalbubblecoin;
     @NotNull
     @Column(name = "n_articles", precision = 10, scale = 2, nullable = false)
     private BigDecimal totalarticles;
@@ -34,12 +36,14 @@ public class Order  {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+
     private Set<OrderItem> orderItems;
     @OneToOne
     private Cart cart;
-    public Order(@NotNull BigDecimal price,@NotNull BigDecimal totalarticles, @NotNull OrderStatus status,
+    public Order(@NotNull BigDecimal price,@NotNull BigDecimal totalbubblecoin,@NotNull BigDecimal totalarticles, @NotNull OrderStatus status,
                  Set<OrderItem> orderItems, Cart cart) {
         this.price = price;
+        this.totalbubblecoin= totalbubblecoin;
         this.totalarticles=totalarticles;
         this.status = status;
         this.orderItems = orderItems;

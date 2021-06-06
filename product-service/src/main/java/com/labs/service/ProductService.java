@@ -1,17 +1,14 @@
 package com.labs.service;
 
-
-
 import com.labs.dto.ProductDto;
 import com.labs.entities.Product;
+import com.labs.entities.enums.ProductDevise;
 import com.labs.repository.CategoryRepository;
 import com.labs.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,9 +44,14 @@ public class ProductService {
                         productDto.getTitle(),
                         productDto.getDescription(),
                         productDto.getPrice(),
+                        productDto.getBubblecoin(),
                         productDto.getQuantity(),
                         productDto.getImgpr(),
-                        categoryRepository.findById(productDto.getCategoryId())
+                        productDto.getImages1(),
+                       productDto.getImages2(),
+                       productDto.getImages3(),
+                       ProductDevise.valueOf(productDto.getDevise()),
+                       categoryRepository.findById(productDto.getCategory().getId())
                                 .orElse(null)
                 )));
     }
@@ -59,13 +61,17 @@ public class ProductService {
                         .findById(id)
                         .orElseThrow(() ->
                                 new IllegalStateException("The Product does not exist!"));
-
-
    product.setTitle(productDto.getTitle());
    product.setDescription(productDto.getDescription());
    product.setQuantity(productDto.getQuantity());
    product.setPrice(productDto.getPrice());
-   product.setCategory(categoryRepository.findById(productDto.getCategoryId())
+   product.setImgpr(productDto.getImgpr());
+   product.setDevise(product.getDevise());
+   product.setImages1(productDto.getImages1());
+   product.setImages2(productDto.getImages2());
+   product.setImages3(productDto.getImages3());
+   product.setBubblecoin(productDto.getBubblecoin());
+   product.setCategory(categoryRepository.findById(productDto.getCategory().getId())
            .orElse(null));
    this.productRepository.save(product);
    return mapToDto(product);
@@ -87,11 +93,14 @@ public class ProductService {
                 product.getTitle(),
                 product.getDescription(),
                 product.getPrice(),
+                product.getBubblecoin(),
                 product.getQuantity(),
                 product.getImgpr(),
-                product.getCategory().getId()
+                product.getImages1(),
+                product.getImages2(),
+                product.getImages3(),
+                product.getDevise().name(),
+                CategoryService.mapToDto(product.getCategory(), 0L)
         );
     }
-
-
 }

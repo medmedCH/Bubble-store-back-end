@@ -1,4 +1,4 @@
-/*
+
 package com.labs.entities;
 
 import lombok.Data;
@@ -15,4 +15,4 @@ public class User {
     private String img;
     private Boolean enabled;
 }
-*/
+

@@ -1,10 +1,12 @@
 package com.labs.dto;
 
+import com.labs.entities.enums.ProductDevise;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -15,10 +17,46 @@ public class ProductDto {
     private String title;
     private String description;
     private BigDecimal price;
+    private BigDecimal bubblecoin;
     private Integer quantity;
     private String imgpr;
-    private Long categoryId;
+    private String images1;
+    private String images2;
+    private String images3;
+    private String devise;
+    private CategoryDto category;
 
+    public String getImages1() {
+        return images1;
+    }
+
+    public void setImages1(String images1) {
+        this.images1 = images1;
+    }
+
+    public String getImages2() {
+        return images2;
+    }
+
+    public void setImages2(String images2) {
+        this.images2 = images2;
+    }
+
+    public String getImages3() {
+        return images3;
+    }
+
+    public void setImages3(String images3) {
+        this.images3 = images3;
+    }
+
+    public String getDevise() {
+        return devise;
+    }
+
+    public void setDevise(String devise) {
+        this.devise = devise;
+    }
 
     public Long getId() {
         return id;
@@ -60,12 +98,12 @@ public class ProductDto {
         this.quantity = quantity;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public CategoryDto getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(CategoryDto category) {
+        this.category = category;
     }
 
     public String getImgpr() {

@@ -42,11 +42,16 @@ public class OrderItemService {
                 .orElseThrow(() ->
                         new IllegalStateException("The oderoteem does not exist!"));
         var order = orderItem.getOrder();
-    order.setPrice(order.getPrice().subtract(orderItem.getProduct().getPrice().multiply(orderItem.getQuantity())));
-    orderItem.setQuantity(qte);
-    order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(qte))));
+        order.setPrice(order.getPrice().subtract(orderItem.getProduct().getPrice().multiply(orderItem.getQuantity())));
+        order.setTotalbubblecoin(order.getTotalbubblecoin().subtract((orderItem.getProduct().getBubblecoin().multiply(orderItem.getQuantity()))));
+        order.setTotalarticles(order.getTotalarticles().subtract(orderItem.getQuantity()));
         this.orderRepository.save(order);
-    this.orderItemRepository.save(orderItem);
+        orderItem.setQuantity(qte);
+        this.orderItemRepository.save(orderItem);
+        order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(qte))));
+        order.setTotalbubblecoin(order.getTotalbubblecoin().add((orderItem.getProduct().getBubblecoin().multiply(qte))));
+        order.setTotalarticles(order.getTotalarticles().add(qte));
+        this.orderRepository.save(order);
         return mapToDto(orderItem);
 
     }
@@ -67,7 +72,8 @@ public class OrderItemService {
             orderItem.setQuantity(orderItem.getQuantity().add(orderItemDto.getQuantity()));
             this.orderItemRepository.save(orderItem);
             order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(orderItemDto.getQuantity()))));
-            order.setTotalarticles(order.getTotalarticles().add(orderItem.getQuantity()));
+            order.setTotalbubblecoin(order.getTotalbubblecoin().add((orderItem.getProduct().getBubblecoin().multiply(orderItemDto.getQuantity()))));
+            order.setTotalarticles(order.getTotalarticles().add(orderItemDto.getQuantity()));
             this.orderRepository.save(order);
             return mapToDto(orderItem);
         }else
@@ -78,6 +84,7 @@ public class OrderItemService {
                         order
                 ));
         order.setPrice(order.getPrice().add((orderItem.getProduct().getPrice().multiply(orderItem.getQuantity()))));
+        order.setTotalbubblecoin(order.getTotalbubblecoin().add((orderItem.getProduct().getBubblecoin().multiply(orderItem.getQuantity()))));
         order.setTotalarticles(order.getTotalarticles().add(orderItem.getQuantity()));
         this.orderRepository.save(order);
         return mapToDto(orderItem);
@@ -89,11 +96,11 @@ public class OrderItemService {
                         new IllegalStateException("The OrderItem does not exist!"));
         var order = orderItem.getOrder();
         order.setPrice(order.getPrice().subtract(orderItem.getProduct().getPrice().multiply(orderItem.getQuantity())));
-       order.setTotalarticles(order.getTotalarticles().subtract(orderItem.getQuantity()));
+        order.setTotalbubblecoin(order.getTotalbubblecoin().subtract((orderItem.getProduct().getBubblecoin().multiply(orderItem.getQuantity()))));
+        order.setTotalarticles(order.getTotalarticles().subtract(orderItem.getQuantity()));
         this.orderItemRepository.deleteById(id);
         this.orderRepository.save(order);
         order.getOrderItems().remove(orderItem);
-
     }
     public List<OrderItemDto> findByOrderId(Long id) {
         log.debug("Request to get all OrderItems of OrderId {}", id);
@@ -103,7 +110,5 @@ public class OrderItemService {
                 .collect(Collectors.toList());
 
     }
-    public  int getquantityorderitems(Long id){
-        return this.orderItemRepository.findOrderItemByOrderId(id);
-    }
+
 }

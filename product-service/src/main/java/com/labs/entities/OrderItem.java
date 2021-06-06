@@ -30,6 +30,7 @@ public class OrderItem   {
     private Product product;
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
+
     public OrderItem(@NotNull BigDecimal quantity, Product product, Order order) {
         this.quantity = quantity;
         this.product = product;

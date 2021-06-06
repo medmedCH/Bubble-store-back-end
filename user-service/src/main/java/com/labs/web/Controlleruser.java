@@ -12,17 +12,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("/user")
-@Produces(MediaType.APPLICATION_JSON)
-public class UserResource {
+@Produces(MediaType.TEXT_PLAIN)
+public class Controlleruser {
 
     @Inject
     JsonWebToken jwt;
     /*@Inject
-    Usersservice usersservice;*/
+    Usersservices usersservices;*/
     @Inject
     TokenService tokenService;
 
@@ -47,13 +48,13 @@ public class UserResource {
     }
 
 
-/*    @GET @Path("/admin/users")
-    @RolesAllowed("admin")
-    public List<User> findalluserss() {
-
-        return this.usersservice.getAllUsers();
-    }*/
-
+  /* @GET
+   @Path("/admin/users")
+   @Produces(MediaType.MEDIA_TYPE_WILDCARD)
+    public Integer findalluserss() {
+        return Keycloakconfig.getInstance().realm("bubble").users().count();
+    }
+*/
 
     @GET
     @RolesAllowed("user")

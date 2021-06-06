@@ -1,8 +1,7 @@
 package com.labs.entities;
 
-import com.labs.dto.ProductDto;
+import com.labs.entities.enums.ProductDevise;
 import com.sun.istack.NotNull;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,6 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString(callSuper = true)
 @Entity
 @Table(name = "products")
@@ -36,7 +34,9 @@ public class Product {
     @NotNull
     @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
-
+    @NotNull
+    @Column(name = "bubblecoin", precision = 10, scale = 2, nullable = false)
+    private BigDecimal bubblecoin;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -44,7 +44,18 @@ public class Product {
     @NotNull
     @Column(name = "imageprincipale", nullable = false)
     private String imgpr;
+    @NotNull
+    @Column(name = "imagess1", nullable = false)
+    public String images1;
+    @Column(name = "imagess2", nullable = false)
+    public String images2;
+    @Column(name = "imagess3", nullable = false)
+    public String images3;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "devise", nullable = false)
+    private ProductDevise devise;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "products_reviews",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -57,12 +68,32 @@ public class Product {
 
 
     public Product(@NotNull String title, @NotNull String description,
-                   @NotNull BigDecimal price,Integer quantity,@NotNull String imgpr, Category category) {
+                   @NotNull BigDecimal price,@NotNull BigDecimal bubblecoin,Integer quantity,@NotNull String imgpr,String images1,String images2, String images3,ProductDevise devise,Category category) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.bubblecoin = bubblecoin;
+        this.quantity = quantity;
+        this.imgpr = imgpr ;
+        this.images1=images1;
+        this.images2=images2;
+        this.images3=images3;
+        this.devise=devise;
+        this.category = category;
+    }
+
+    public Product(Long id, String title, String description, BigDecimal price, Integer quantity, String imgpr, String images1, String images2, String images3, ProductDevise devise, Set<Review> reviews, Category category) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.imgpr = imgpr ;
+        this.imgpr = imgpr;
+        this.images1 = images1;
+        this.images2 = images2;
+        this.images3 = images3;
+        this.devise = devise;
+        this.reviews = reviews;
         this.category = category;
     }
 
