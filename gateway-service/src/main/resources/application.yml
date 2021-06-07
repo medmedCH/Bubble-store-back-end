@@ -22,7 +22,7 @@ spring:
         - id: payment-services
           uri: lb://paymentt
           predicates:
-            - Path=/api/bubblecoin/**
+            - Path=/api/bubblecoin/**,/api/payment/**
           filters:
               - StripPrefix=1
 
