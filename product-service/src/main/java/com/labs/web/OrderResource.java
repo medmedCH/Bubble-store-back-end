@@ -2,6 +2,7 @@ package com.labs.web;
 
 import com.labs.dto.OrderDto;
 import com.labs.entities.Cart;
+import com.labs.entities.Order;
 import com.labs.service.OrderService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -46,5 +47,10 @@ public class OrderResource {
     @Path("/exists/{id}")
     public boolean existsById(@PathParam("id") Long id) {
         return this.orderService.existsOrderByCart(id);
+    }
+    @GET
+    @Path("/getorderss/{id}")
+    public OrderDto getorderr(@PathParam("id") Long id) {
+        return this.orderService.getorders(id);
     }
 }

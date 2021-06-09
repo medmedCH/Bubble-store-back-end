@@ -1,6 +1,7 @@
 package com.labs.web;
 
 import com.labs.dto.CartDto;
+import com.labs.entities.Cart;
 import com.labs.service.CartService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -36,6 +37,10 @@ public class CartResource {
     @GET @Path("/existcart/{id}")
     public CartDto existtt(@PathParam("id") String id) {
         return this.cartService.getcartuserlogin(id);
+    }
+    @GET @Path("/getcarts/{id}")
+    public List<Cart> getcarts(@PathParam("id") String id) {
+        return this.cartService.getcartsuserlogin(id);
     }
     @GET @Path("/{id}")
     public CartDto findById(@PathParam("id") Long id) {

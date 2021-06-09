@@ -92,6 +92,13 @@ public class CartService {
         }
         return null;
     }
+    public List<Cart> getcartsuserlogin(String user_id){
+        List<Cart> carts= this.cartRepository.findCartByUser_idAndStatus(user_id,CartStatus.CANCELED);
+        if (carts != null) {
+            return carts;
+        }
+        return null;
+    }
     public static CartDto mapToDto(Cart cart) {
         return new CartDto(
                 cart.getId(),

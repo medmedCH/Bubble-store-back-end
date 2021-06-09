@@ -4,6 +4,7 @@ import com.labs.dto.OrderDto;
 import com.labs.dto.OrderItemDto;
 import com.labs.entities.Cart;
 import com.labs.entities.Order;
+import com.labs.entities.enums.CartStatus;
 import com.labs.entities.enums.OrderStatus;
 import com.labs.repository.CartRepository;
 import com.labs.repository.OrderRepository;
@@ -60,11 +61,14 @@ public class OrderService {
                 .orElseThrow(() ->
                         new IllegalStateException(
                                 "Order with ID[" + id + "] cannot be found!"));
-
         orderRepository.delete(order);
     }
     public boolean existsOrderByCart(Long id) {
         return this.orderRepository.existsOrdersByCart_IdAndStatus(id,OrderStatus.CREATION);
+    }
+    public OrderDto getorders(Long cartid){
+        Order order= this.orderRepository.findOrdersByCartIdAndStatus(cartid,OrderStatus.CLOSED);
+        return  mapToDto(order);
     }
    public OrderDto getuserorder(Long cartid){
        Order order= this.orderRepository.findOrderByCartId(cartid);
