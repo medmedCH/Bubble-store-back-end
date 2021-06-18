@@ -77,7 +77,18 @@ public class ProductService {
    return mapToDto(product);
 
     }
-
+//    public ProductDto updateproductqte(Long id ,Integer qte) {
+//        var product =
+//                this.productRepository
+//                        .findById(id)
+//                        .orElseThrow(() ->
+//                                new IllegalStateException("The Product does not exist!"));
+//
+//        product.setQuantity(qte);
+//        this.productRepository.save(product);
+//        return mapToDto(product);
+//
+//    }
 
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
